@@ -2,8 +2,10 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"net"
+	"time"
 )
 
 func logFetal(err error) {
@@ -33,6 +35,7 @@ func main() {
 		for {
 			conn, err := ln.Accept()
 			logFetal(err)
+			fmt.Println("Someone connected at ", time.Now())
 
 			//If there is connection, and it accepts it, make it true
 			OpenConnection[conn] = true

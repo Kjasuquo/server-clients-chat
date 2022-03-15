@@ -29,7 +29,7 @@ func main() {
 
 	//read message/username from the stdin (terminal)
 	reader := bufio.NewReader(os.Stdin)
-	//read every line as a string
+	//convert to a string
 	username, err := reader.ReadString('\n')
 	logFetal(err)
 
@@ -61,14 +61,14 @@ func write(connection net.Conn, username string) {
 	for {
 		//read message from the stdin (terminal)
 		reader := bufio.NewReader(os.Stdin)
-		//read every line as a string
+		//convert to a string
 		message, err := reader.ReadString('\n')
 		if err != nil {
 			break
 		}
 
 		//to print out the username and the message sent, use sprintf to assign it to a variable
-		mes := fmt.Sprintf("%s:- %s\n", username, strings.Trim(message, "\n"))
+		mes := fmt.Sprintf("%s: %s\n", username, strings.Trim(message, "\n"))
 
 		//Dial the written message for a server in the same port (:8080) to listen
 		connection.Write([]byte(mes))
