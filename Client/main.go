@@ -25,17 +25,6 @@ func main() {
 	//close at the end
 	defer connection.Close()
 
-	GetUsername()
-
-	go read(connection)
-
-	write(connection, GetUsername())
-
-}
-
-//-------FUNCTIONS---------
-
-func GetUsername() string {
 	fmt.Println("Enter Username")
 
 	//read message/username from the stdin (terminal)
@@ -48,7 +37,10 @@ func GetUsername() string {
 	welcomeMessage := fmt.Sprintf("Welcome %s", username)
 	fmt.Println(welcomeMessage)
 
-	return username
+	go read(connection)
+
+	write(connection, username)
+
 }
 
 func read(connection net.Conn) {
