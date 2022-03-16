@@ -29,22 +29,31 @@ func main() {
 	defer ln.Close()
 
 	//using Goroutine
-	go func() {
+	go AcceptConnection(ln)
 
-		//create an infinite loop to always accept a connection that has been discovered while listening
-		for {
-			conn, err := ln.Accept()
-			logFetal(err)
-			fmt.Println("Someone connected at ", time.Now())
+	SelectingChannel()
 
-			//If there is connection, and it accepts it, make it true
-			OpenConnection[conn] = true
+}
 
-			//pass the connection through this channel
-			NewConnection <- conn
-		}
-	}()
+//-------FUNCTIONS---------
 
+func AcceptConnection(ln net.Listener) {
+
+	//create an infinite loop to always accept a connection that has been discovered while listening
+	for {
+		conn, err := ln.Accept()
+		logFetal(err)
+		fmt.Println("Someone connected at ", time.Now())
+
+		//If there is connection, and it accepts it, make it true
+		OpenConnection[conn] = true
+
+		//pass the connection through this channel
+		NewConnection <- conn
+	}
+}
+
+func SelectingChannel() {
 	for {
 		select {
 		// if there is something in the channel, invoke broadcast message (broadcast to other connections)
@@ -62,7 +71,6 @@ func main() {
 		}
 
 	}
-
 }
 
 func broadcastMessage(conn net.Conn) {
