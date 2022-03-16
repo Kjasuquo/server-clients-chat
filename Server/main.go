@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	"fmt"
+	"github.com/gookit/color"
 	"log"
 	"net"
 	"time"
@@ -43,7 +43,7 @@ func AcceptConnection(ln net.Listener) {
 	for {
 		conn, err := ln.Accept()
 		logFetal(err)
-		fmt.Println("Someone connected at ", time.Now())
+		color.Red.Println("Someone connected at ", time.Now())
 
 		//If there is connection, and it accepts it, make it true
 		OpenConnection[conn] = true

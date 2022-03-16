@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/gookit/color"
 	"io"
 	"log"
 	"net"
@@ -25,7 +26,7 @@ func main() {
 	//close at the end
 	defer connection.Close()
 
-	fmt.Println("Enter Username")
+	color.Cyan.Println("Enter Username")
 
 	//read message/username from the stdin (terminal)
 	reader := bufio.NewReader(os.Stdin)
@@ -35,7 +36,7 @@ func main() {
 
 	username = strings.Trim(username, "\n")
 	welcomeMessage := fmt.Sprintf("Welcome %s", username)
-	fmt.Println(welcomeMessage)
+	color.Blue.Println(welcomeMessage)
 
 	go read(connection)
 
@@ -49,11 +50,11 @@ func read(connection net.Conn) {
 		message, err := reader.ReadString('\n')
 		if err == io.EOF {
 			connection.Close()
-			fmt.Println("Connection closed")
+			color.Red.Println("Connection closed")
 			os.Exit(0)
 		}
 		fmt.Println(message)
-		//fmt.Println("-----------------------------------")
+		color.Yellow.Println("-----------------------------------")
 	}
 }
 
@@ -68,7 +69,7 @@ func write(connection net.Conn, username string) {
 		}
 
 		//to print out the username and the message sent, use sprintf to assign it to a variable
-		mes := fmt.Sprintf("%s: %s\n", username, strings.Trim(message, "\n"))
+		mes := color.Green.Sprintf("%s: %s\n", username, strings.Trim(message, "\n"))
 
 		//Dial the written message for a server in the same port (:8080) to listen
 		connection.Write([]byte(mes))
